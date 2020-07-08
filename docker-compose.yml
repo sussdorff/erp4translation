@@ -1,0 +1,58 @@
+version: '3.1'
+
+services:
+    naviserver:
+        image: sussdorff/erp4translation
+        volumes:
+            - content:/var/www/openacs/content-repository-content-files
+            - filestorage:/var/www/openacs/filestorage
+            # Add more path for developing in packages
+            # - ./packages/webix-portal:/var/www/openacs/packages/webix-portal:cached
+            
+        depends_on: 
+            - postgres
+        ports: 
+            - 8091:8000
+        secrets:
+            - psql_password
+            - psql_user
+            - config_vars
+
+    postgres:
+        image: postgres:11
+        secrets:
+            - psql_password
+            - psql_user
+        environment:
+            POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
+            POSTGRES_USER_FILE: /run/secrets/psql_user
+            POSTGRES_DB: openacs
+        ports: 
+            - 5442:5432
+        volumes:
+            - data:/var/lib/postgresql/data
+            - ./database:/docker-entrypoint-initdb.d
+
+#    unoserver:
+#        image: alphakevin/unoconv-server
+
+    swagger:
+        image: swaggerapi/swagger-editor
+        ports:
+            - 8092:8080
+
+volumes:
+    data:
+    content:
+    filestorage:
+    
+        
+secrets:
+    psql_user:
+        file: ./psql_user.txt
+    psql_password:
+        file: ./psql_password.txt
+    # config_vars contain the variables needed for the naviserver
+    # These are like debug level etc.
+    config_vars:
+        file: ./config_vars.tcl
