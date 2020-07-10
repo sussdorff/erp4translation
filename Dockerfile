@@ -9,8 +9,14 @@ RUN for pkg in ${PKGS_OLD_LIST} ; do echo $pkg \
     && rm -rf $pkg && wget -q https://gitlab.com/cognovis/$pkg/-/archive/master/$pkg.tar.gz \
     && tar xfz $pkg.tar.gz && mv ${pkg}-master-* $pkg && rm $pkg.tar.gz ; done
 
-ENV DEPRECATE_LIST "sencha-assignment sencha-freelance-translation sencha-portal intranet-sencha-tables"
+ENV DEPRECATE_LIST "sencha-assignment sencha-freelance-translation sencha-portal"
 
 RUN for pkg in ${DEPRECATE_LIST} ; do echo $pkg \
     && rm -rf $pkg && wget -q https://gitlab.com/cognovis/$pkg/-/archive/master/$pkg.tar.gz \
     && tar xfz $pkg.tar.gz && mv ${pkg}-master-* $pkg && rm $pkg.tar.gz ; done
+
+ENV DEPRECATE_50_LIST "intranet-sencha-tables"
+
+RUN for pkg in ${DEPRECATE_50_LIST} ; do echo $pkg \
+    && rm -rf $pkg && wget -q https://gitlab.com/cognovis/$pkg/-/archive/oacs-5-10/$pkg.tar.gz \
+    && tar xfz $pkg.tar.gz && mv ${pkg}-oacs-5-10-* $pkg && rm $pkg.tar.gz ; done
