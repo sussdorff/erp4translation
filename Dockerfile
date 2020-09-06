@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/cognovis-5/erp4projects
+FROM sussdorff/erp4projects
 
 WORKDIR /var/www/openacs/packages
 
